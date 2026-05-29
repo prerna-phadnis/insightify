@@ -1,0 +1,69 @@
+.result-section {
+  margin-top: 1.5rem;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge.low {
+  background: rgba(0, 255, 160, 0.15);
+  color: #00ffa0;
+}
+
+.badge.medium {
+  background: rgba(255, 200, 0, 0.15);
+  color: #ffd000;
+}
+
+.badge.high {
+  background: rgba(255, 80, 80, 0.15);
+  color: #ff5a5a;
+}
+
+.confidence-bar {
+  margin-top: 0.5rem;
+  height: 10px;
+  background: #2b2f55;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c7cff, #00ffd5);
+  transition: width 0.6s ease;
+}
+
+.section-card {
+  background: #10132a;
+  border-radius: 14px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+}
+
+.section-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.copy-btn {
+  margin-top: 0.8rem;
+  background: none;
+  border: 1px solid #2b2f55;
+  color: #a0a3c4;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: #2b2f55;
+  color: white;
+}
