@@ -1,140 +1,104 @@
-# ContextCheck — Explainable AI for Misinformation Awareness
+# Insightify — Explainable Claim Context Tool
 
-ContextCheck is a **GenAI-powered web application** that helps users understand **how news claims and headlines can mislead**, even when they are partially true.
-Instead of labeling content as *fake* or *real*, ContextCheck focuses on **missing context, framing, and potential impact** — encouraging critical thinking.
+Insightify is a GenAI-backed web app that helps users understand how short claims, headlines, or social posts may mislead by identifying missing context, framing choices, and potential impact. It emphasizes explanation and education rather than binary fact labeling.
 
-**Live Demo:** _(add your deployed URL here)_
+## Highlights
+- Explain why a claim may mislead (not just label it)
+- Provide a neutral rewrite and confidence score
+- Return structured JSON suitable for UI rendering
+- Small, clear backend and a React + Vite frontend
 
----
+## Repo structure
 
-## Problem Statement
+- backend/ — Node.js + Express API that calls the Groq LLM
+- frontend/ — React (Vite) single-page app
 
-In today’s digital world, misinformation rarely looks like an outright lie.
+## Quickstart (Development)
 
-Most misleading content:
-- Uses **true statistics without context**
-- Relies on **emotional or alarming framing**
-- Omits **baselines, sources, or timelines**
-- Spreads faster than fact-checks
+Prerequisites: Node.js (v18+ recommended) and npm or pnpm.
 
-Binary labels like *fake / real* are often:
-- Overly simplistic
-- Politically sensitive
-- Not educational for users
+1) Run the backend
 
-There is a need for a tool that explains **how** information can mislead — not just **whether** it is wrong.
+```bash
+cd backend
+npm install
+# create a .env with GROQ_API_KEY (see below)
+npm run dev
+```
 
----
+The backend runs on port `5000` by default. Health check: `http://localhost:5000/health`.
 
-## Why This Matters
+2) Run the frontend
 
-Misinformation affects:
-- Public opinion & democracy
-- Individual decision-making
-- Trust in media
-- Social media discourse
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-ContextCheck helps users:
-- Develop **media literacy**
-- Recognize **manipulative framing**
-- Ask better follow-up questions
-- Consume news more responsibly
+The frontend uses Vite (default port `5173`). Open the URL shown by Vite in your browser.
 
-This makes it useful for:
-- Students & educators
-- Journalists & researchers
-- Everyday news consumers
-- Hackathons & civic tech initiatives
+## Environment
 
----
+Required environment variables for the backend (create a `.env` in `backend/`):
 
-## How ContextCheck Works
+- `GROQ_API_KEY` — API key for the Groq LLM SDK used by the backend.
+- Optional: `PORT` — port for the backend (defaults to `5000`).
 
-1. **User Input**
-Users paste a headline, tweet, or news claim into the app.
+Example `.env` (backend/.env):
 
-2. **GenAI Analysis**
-A Large Language Model (LLM) analyzes the claim to:
-- Identify claim type (statistical, opinion, etc.)
-- Detect missing or vague context
-- Explain why the claim may mislead
-- Assess potential real-world impact
+```
+GROQ_API_KEY=sk-...your-key...
+PORT=5000
+```
 
-3. **Explainable Output**
-The app returns:
-- Misinformation risk level
-- Clear explanations (not accusations)
-- A neutral, context-aware rewrite
-- Confidence score for transparency
+## Backend API
 
-4. **User-Friendly Visualization**
-Results are displayed with:
-- Animated risk badges
-- Confidence meter
-- Sectioned explanations
-- Copy-to-clipboard support
+POST /api/analyze-claim
 
----
+Request JSON:
 
-## Tech Stack
+```json
+{ "claim": "The claim text to analyze" }
+```
 
-### Frontend
-- **React (Vite)**
-- Custom CSS (no UI frameworks)
-- Animations & micro-interactions
-- Responsive design
+Response: Structured JSON with fields produced by the model:
+- `claim_type`
+- `misinformation_risk`
+- `why_it_misleads` (array)
+- `missing_context` (array)
+- `potential_impact` (array)
+- `neutral_rewrite`
+- `confidence_score`
 
-### Backend
-- **Node.js**
-- **Express.js**
-- Environment-based configuration
-- Defensive JSON parsing & normalization
+Example curl:
 
-### AI / GenAI
-- **Groq LLM API**
-Prompt-engineered for:
-  - Structured JSON output
-  - Explainability
-  - Responsible analysis
+```bash
+curl -s -X POST http://localhost:5000/api/analyze-claim \
+  -H "Content-Type: application/json" \
+  -d '{"claim":"Crime has doubled in area X"}'
+```
 
-### Deployment
-- **Vercel** (Frontend – Free tier)
-- **Render** (Backend – Free tier)
-- GitHub-based CI/CD
+## Development notes
+
+- The backend uses `groq-sdk` and expects the raw LLM output to be JSON; the route strips markdown fences and parses JSON, returning an error if parsing fails.
+- Prompt engineering is in `backend/src/lib/prompt.js` and returns strict JSON tokens for reliability.
+
+## Contributing
+
+- Fork, create a branch, add tests or a small demo, and open a PR.
+- Keep prompts and system instructions auditable and version-controlled.
+
+## License
+
+Add a license file if you plan to open-source this project.
 
 ---
 
-## Responsible AI Note
+If you want, I can:
 
-ContextCheck is built with **responsible GenAI principles**:
+- Add a `.env.example` to `backend/` with the required keys.
+- Add a small README snippet inside `frontend/` with the development URL and expected environment.
+- Create a simple Postman/Insomnia collection or a curl example file in `scripts/`.
 
-- Does NOT label content as “fake” or “true”
-- Does NOT accuse authors or sources
-- Focuses on *missing context & framing*
-- Encourages critical thinking, not blind trust
-- Displays confidence scores to avoid false certainty
-
-The goal is **education and awareness**, not enforcement or censorship.
-
----
-
-## Future Scope
-
-ContextCheck is designed to be extensible. Future enhancements may include:
-- Topic-aware analysis (health, politics, finance)
-- “Why people believe this” psychology insights
-- Browser extension support
-- Multi-language support
-- Source comparison views
-
----
-
-## Final Note
-
-ContextCheck is a **hackathon-ready, portfolio-quality GenAI project** that demonstrates:
-- Practical AI usage
-- Explainable AI design
-- Clean UX
-- Production-ready engineering
-
-Built to scale. Built responsibly.
+Which would you like next?
